@@ -1,0 +1,71 @@
+\documentclass[11pt,svgnames,smaller]{beamer}
+
+\usepackage{CommandsAndStyle}
+
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{subfig}
+\usepackage{xcolor}
+\usepackage{textpos}
+\usepackage{transparent}
+\usepackage{tikz}
+\usepackage{epigraph}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{latexsym}
+\usepackage{graphicx} % [demo] is just for the example
+\usepackage{wrapfig}
+\usepackage{array, makecell} %
+
+\usepackage{caption}
+\mode<presentation>
+
+\author{Gaspare Ferraro}
+
+\institute[University of Pisa]{University of Pisa\\Department of Computer Science}
+
+\setbeamertemplate{section page}
+{
+	\begin{centering}
+		\begin{beamercolorbox}[sep=16pt,center]{part title}
+			\usebeamerfont{section title}\insertsection\par
+		\end{beamercolorbox}
+	\end{centering}
+}
+
+\title{TwoPaCo}
+\subtitle{An efficient algorithm to build the compacted de Bruijn graph}
+\date{Pisa, XX May 2018}
+\titlegraphic{\vfill}
+%\includegraphics[height=0.4cm]{images/creative_commons.png}}
+
+\setbeamercolor{title}{fg=black!65!black}
+
+% \author[Relatore]{Roberto Grossi}
+
+\begin{document}
+	
+ \logo{\transparent{0.2}\includegraphics[height=2cm]{images/cherubino}}
+
+	\begin{frame} 
+	\titlepage
+	\end{frame}
+		
+	\include{./1_introduction}
+	\include{./2_algorithm}
+	\include{./3_results}
+	
+	\section{Fine}
+	\begin{frame}
+		\frametitle{Conclusion}
+		\centering
+		\Large
+		Thanks for your attention!
+ 	\end{frame}
+ 
+	%\include{./4_extra}
+ 
+ 
+
+\end{document}
