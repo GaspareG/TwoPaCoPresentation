@@ -2,7 +2,6 @@
 
 \usepackage{CommandsAndStyle}
 
-\usepackage{listings}
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{subfig}
@@ -17,8 +16,10 @@
 \usepackage{graphicx} % [demo] is just for the example
 \usepackage{wrapfig}
 \usepackage{array, makecell} %
+\usepackage{hyperref}
 
 \usepackage{caption}
+
 \mode<presentation>
 
 \author{Gaspare Ferraro}
@@ -35,23 +36,23 @@
 }
 
 \title{TwoPaCo}
-\subtitle{An efficient algorithm to build the compacted de Bruijn graph}
-\date{Pisa, XX May 2018}
+\subtitle{An efficient algorithm to build the compacted de Bruijn graph\\from many complete genomes}
+\date{Pisa, 29 May 2018}
 \titlegraphic{\vfill}
 %\includegraphics[height=0.4cm]{images/creative_commons.png}}
 
 \setbeamercolor{title}{fg=black!65!black}
 
-% \author[Relatore]{Roberto Grossi}
+\renewcommand{\partname}{Part}
 
 \begin{document}
 	
- \logo{\transparent{0.2}\includegraphics[height=2cm]{images/cherubino}}
+ \logo{\transparent{0.2}\includegraphics[height=3cm]{images/cherubino}}
 
 	\begin{frame} 
 	\titlepage
 	\end{frame}
-		
+			
 	\include{./1_introduction}
 	\include{./2_algorithm}
 	\include{./3_results}
@@ -63,9 +64,5 @@
 		\Large
 		Thanks for your attention!
  	\end{frame}
- 
-	%\include{./4_extra}
- 
- 
-
+  
 \end{document}

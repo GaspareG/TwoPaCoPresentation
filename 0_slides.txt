@@ -1,0 +1,25 @@
+1. Introduction
+  O 1. A pan-genomic algorithm
+  O 2. De Bruijn graph
+  O 3. Compacted de Bruijn graph
+  O 4. The problem
+  O 5. Junctions
+
+2. Algorithm
+  O 1. Naive algorithm
+  O 2. The memory issue
+  X 3. Bloom filter
+  O 4. Two Pass version
+  O 5. The memory issue$^2$
+  O 6. Multiple rounds: dealing with memory restrictions
+  O 7. Parallelization scheme
+
+3. Results
+  X 1. Source code \& Dataset
+  X 2. Memory complexity
+  X 3. Time complexity
+  X 4. Time comparison
+  X 5. Fixed memory
+  X 6. Parallel scalability
+  X 7. Bloom Filter False positive
+
