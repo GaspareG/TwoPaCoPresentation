@@ -6,10 +6,10 @@
   O 5. Junctions
 
 2. Algorithm
-  O 1. Naive algorithm
-  O 2. The memory issue
+  X 1. Naive algorithm
+  X 2. The memory issue
   X 3. Bloom filter
-  O 4. Two Pass version
+  X 4. Two Pass version
   O 5. The memory issue$^2$
   O 6. Multiple rounds: dealing with memory restrictions
   O 7. Parallelization scheme
@@ -18,7 +18,8 @@
   X 1. Source code \& Dataset
   X 2. Memory complexity
   X 3. Time complexity
-  X 4. Time comparison
+  X 4. Complexity comparison
+  X 5. Running time comparison
   X 5. Fixed memory
   X 6. Parallel scalability
   X 7. Bloom Filter False positive

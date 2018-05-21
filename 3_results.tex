@@ -127,7 +127,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-	\frametitle{Performance comparison}
+	\frametitle{Complexity comparison}
 	
 	\centering
 	
@@ -173,7 +173,48 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+	\frametitle{Running time comparison}
+	
+	\centering
 
+	
+    \begin{tabular}{ | l | c | c | c | c | c | c | }
+    \hline
+    Dataset    &  Sibelia &   SplitMEM &     bwt-based &  \multicolumn{2}{c|}{TwoPaCo} \\
+               &          &            &               & 1 thread & 15 thread\\ \hline
+               
+    62 E.coli (k=25)   & 0 (12.2) & 70 (178.0) &      8 (0.85) &    4 (0.16) & 2 (0.39) \\
+    62 E.coli (k=100)  &  8 (7.6) & 67 (178.0) &      8 (0.50) &    4 (0.19) & 2 (0.39) \\ \hline
+    
+    7 humans (k=25)    &        - &          - &  867 (100.30) &  436 (4.40) & 63 (4.84) \\ 
+    7 humans (k=100)   &        - &          - &   807 (46.02) &  317 (8.42) & 57 (8.75) \\ \hline
+    
+    8 primates (k=25)  &        - &          - &             - & 914 (34.36) & 111 (34.36) \\
+    8 primates (k=100) &        - &          - &             - & 756 (56.06) & 101 (61.68) \\ \hline
+    
+    50 humans (k=25)   &        - &          - &             - &          -  & 705 (69.77) \\
+    50 humans (k=100)  &        - &          - &             - &          -  & 927 (70.21) \\ \hline
+     
+    \end{tabular}
+    
+    \medskip
+    
+    Running times in minutes and memory usage in gigabytes in parenthesis
+    
+    \medskip
+    
+    \begin{itemize}
+      \item - on Sibelia = out of time
+      \item - on SplitMEM = out of memory
+      \item - on bwt-baed = out of memory
+    \end{itemize}
+
+  
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 	\frametitle{Fixed memory}
 	\centering
