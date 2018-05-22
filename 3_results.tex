@@ -77,7 +77,7 @@
 
 	\medskip
 	
-	Result: $O( \max(b, (J+FP)k) )$
+	Result: $\mathcal{O}(\max\{b, (J+FP)k\})$
 	
 	
 \end{frame}
@@ -97,14 +97,14 @@
 	
 	\begin{itemize}
 	  \item First pass: insert all $k$-mers in a bloom filter of size $b$ using $h$ hash functions
-	  \item Second pass: store all \textbf{junction candidates} in a hash table
+	  \item Second pass: iterate over all candidate $k$-mers
 	\end{itemize}
 	
 	\bigskip
 	
 	How many $k$-mers? \\
 	
-	$O(m)$, where $m = \Sigma_{s \in S}{ |s| }$ is the total input size
+	$\mathcal{O}(m)$, where $m = \Sigma_{s \in S}{ |s| }$ is the total input size
 	
 	\bigskip
 	 
@@ -117,7 +117,7 @@
 
 	\medskip
 	
-	Result: $O(mh + (|G_{c}| + FP)k)$
+	Result: $\mathcal{O}(mh + (|G_{c}| + FP)k)$
 	
 	
 \end{frame}
@@ -133,29 +133,32 @@
 	
 	%\pause
 	
-	  Previous approach to the problem:
-	
+  State of the art for compressed de Bruijn graph construction:
+  
 	  \begin{itemize}
-	    \item Sibelia (St. Petersburg University, RU, 2012)
-	    \item SplitMEM (Stony Brook University, USA, 2014)
-	    \item bwt-based (Harbin Institute of Technology, CN, 2016)
-	    \item TwoPaCo (The Pennsylvania State University, USA, 2016)
+	    \item Sibelia (Minkin, Patel, Kolmogorov, Vyahhi, Pham, 2013)
+	    \item SplitMEM (Marcus, Lee, Schatz, 2014)
+	    \item bwt-based (Baier, Beller, Ohlebusch, 2015)
 	  \end{itemize}
 
 	%\pause	
 	
 	  \medskip
 	  
-	  \begin{tabular}{ r | r | r }
+    \scalebox{0.85}{                        
+  
+  	  \begin{tabular}{ r | r | r }
     \hline
-    Algorithm  &           Time complexity &        Memory complexity   \\ \hline
-    Sibelia    & $O(m)$                    & $O(m)$                     \\
-    SplitMEM   & $O(m \log{g})$            & $O(m + |G_{c}|)$           \\
-    bwt-based  & $O(m)$                    & $O(m)$                     \\
-    TwoPaCo    & $O(mh + (|G_{c}| + FP)k)$ & $O( \max(b, (J+FP)k) )$    \\    
+    Algorithm  &                      Time complexity &        Memory complexity   \\ \hline
+    Sibelia    & $\mathcal{O}(m)$                    & $\mathcal{O}(m)$                     \\
+    SplitMEM   & $\mathcal{O}(m \log{g})$            & $\mathcal{O}(m + |G_{c}|)$           \\
+    bwt-based  & $\mathcal{O}(m)$                    & $\mathcal{O}(m)$                     \\
+    TwoPaCo    & $\mathcal{O}(mh + (|G_{c}| + FP)k)$ & $\mathcal{O}(\max\{b, (J+FP)k \})$ \\    
     \hline
     \end{tabular}
-    
+  
+    }
+        
     \medskip
 
 	%\pause
@@ -175,14 +178,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 	\frametitle{Running time comparison}
-	
+
 	\centering
 
-	
-    \begin{tabular}{ | l | c | c | c | c | c | c | }
+  What are the practical performances of TwoPaCo against the state of the art? \\
+
+  \medskip  	
+
+	  \scalebox{.7}{                        
+
+    \begin{tabular}{ | r | r | r | r | r | r | r | }
     \hline
-    Dataset    &  Sibelia &   SplitMEM &     bwt-based &  \multicolumn{2}{c|}{TwoPaCo} \\
-               &          &            &               & 1 thread & 15 thread\\ \hline
+    Dataset    &  Sibelia &   SplitMEM &     bwt-based &  \multicolumn{2}{c|}{TwoPaCo} \\ \hline
+    \multicolumn{4}{| r |}{}                           & 1 thread & 15 thread\\ \hline
                
     62 E.coli (k=25)   & 0 (12.2) & 70 (178.0) &      8 (0.85) &    4 (0.16) & 2 (0.39) \\
     62 E.coli (k=100)  &  8 (7.6) & 67 (178.0) &      8 (0.50) &    4 (0.19) & 2 (0.39) \\ \hline
@@ -198,23 +206,26 @@
      
     \end{tabular}
     
+    }
+
     \medskip
-    
+
     Running times in minutes and memory usage in gigabytes in parenthesis
-    
+        
     \medskip
     
     \begin{itemize}
       \item - on Sibelia = out of time
       \item - on SplitMEM = out of memory
-      \item - on bwt-baed = out of memory
+      \item - on bwt-based = out of memory
+      \item - on TwoPaCo = experiment not done
     \end{itemize}
 
-  
-
 \end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}
 	\frametitle{Fixed memory}
 	\centering
@@ -232,6 +243,15 @@
          4GB &      3.51GB &       2.14GB ($2^{31}$) &          11h &      6 \\
   \hline
   \end{tabular}
+  
+  \medskip
+  
+  Experiments on 5 simulated human genomes, $k = 25$, 8 threads.
+  
+  \medskip
+  
+  Result: we can trade-off memory for time.
+  
 
 \end{frame}
 
@@ -260,20 +280,53 @@
 	\frametitle{Bloom Filter false positive}
 	\centering
 	
-	  Is the Bloom Filter really useful in reducing junction candidates?
+	  Is the Bloom Filter really efficient in reducing junction candidates?
 	  
     \bigskip
 	  
-    \begin{tabular}{ r | r | r | r | r | r }
+	  %\scalebox{.7}{                        
+    %\begin{tabular}{ r | r | r | r | r | r }
+    %\hline
+    %Dataset    &   k &            Initial &       First pass &      Second pass & \%Fp \\ \hline
+    %62 E.coli  &  25 &  $3.101 * 10^{8\phantom{0}}$  & $2.464 * 10^{7}$ & $2.457 * 10^{7}$ & \phantom{0}0.31\% \\
+    %62 E.coli  & 100 &  $3.101 * 10^{8\phantom{0}}$  & $2.284 * 10^{7}$ & $9.492 * 10^{6}$ & 58.45\% \\
+    %7 humans   &  25 &  $2.120 * 10^{10}$ & $3.489 * 10^{9}$ & $2.974 * 10^{9}$ & 14.78\% \\
+    %7 humans   & 100 &  $2.120 * 10^{10}$ & $1.374 * 10^{9}$ & $1.882 * 10^{8}$ & 86.30\% \\
+    %8 primates &  25 &  $2.454 * 10^{10}$ & $5.423 * 10^{9}$ & $5.401 * 10^{9}$ & \phantom{0}0.39\% \\
+    %8 primates & 100 &  $2.454 * 10^{10}$ & $1.174 * 10^{9}$ & $5.024 * 10^{8}$ & 57.20\% \\ \hline
+    %\end{tabular}
+    %}
+    
+    %\scalebox{.7}{                        
+    %\begin{tabular}{ r | r | r | r | r | r }
+    %\hline
+    %           &     &    \multicolumn{3}{ c | }{Junction candidates} &                \\ \hline
+    %Dataset    &   k &        Initial &    First pass &   Second pass & False positive \\ \hline
+    %62 E.coli  &  25 &    310 157 564 &    24 649 489 &    24 572 562 &         76 927 \\ 
+    %62 E.coli  & 100 &    310 157 489 &    22 848 018 &     9 492 091 &     13 355 927 \\ \hline
+    %7 humans   &  25 & 21 201 290 922 & 3 489 946 013 & 2 974 098 154 &    515 847 859 \\ 
+    %7 humans   & 100 & 21 201 290 847 & 1 374 287 870 &   188 224 214 &  1 186 063 656 \\ \hline
+    %8 primates &  25 & 24 540 556 921 & 5 423 003 377 & 5 401 587 503 &     21 415 874 \\ 
+    %8 primates & 100 & 24 540 556 846 & 1 174 160 336 &   502 441 107 &    671 719 229 \\ \hline
+    %        
+    %\end{tabular}
+    %}
+    
+    \scalebox{.7}{                        
+    \begin{tabular}{ r | r | r | r | r }
     \hline
-    Dataset    &   k &            Initial &       First pass &      Second pass & \%Fp \\ \hline
-    62 E.coli  &  25 &  $3.101 * 10^{8\phantom{0}}$  & $2.464 * 10^{7}$ & $2.457 * 10^{7}$ & \phantom{0}0.31\% \\
-    62 E.coli  & 100 &  $3.101 * 10^{8\phantom{0}}$  & $2.284 * 10^{7}$ & $9.492 * 10^{6}$ & 58.45\% \\
-    7 humans   &  25 &  $2.120 * 10^{10}$ & $3.489 * 10^{9}$ & $2.974 * 10^{9}$ & 14.78\% \\
-    7 humans   & 100 &  $2.120 * 10^{10}$ & $1.374 * 10^{9}$ & $1.882 * 10^{8}$ & 86.30\% \\
-    8 primates &  25 &  $2.454 * 10^{10}$ & $5.423 * 10^{9}$ & $5.401 * 10^{9}$ & \phantom{0}0.39\% \\
-    8 primates & 100 &  $2.454 * 10^{10}$ & $1.174 * 10^{9}$ & $5.024 * 10^{8}$ & 57.20\% \\ \hline
+               &     &                                  \multicolumn{3}{ c }{Junction candidates} \\ \hline
+    Dataset    &   k &                Initial &              First pass &             Second pass \\ \hline
+    62 E.coli  &  25 &    310 157 564 (100\%) &    24 649 489  (7.94\%) &    24 572 562  (7.92\%) \\ 
+    62 E.coli  & 100 &    310 157 489 (100\%) &    22 848 018  (7.36\%) &     9 492 091  (3.06\%) \\ \hline
+    7 humans   &  25 & 21 201 290 922 (100\%) & 3 489 946 013 (16.46\%) & 2 974 098 154 (14.02\%) \\ 
+    7 humans   & 100 & 21 201 290 847 (100\%) & 1 374 287 870  (6.48\%) &   188 224 214  (0.88\%) \\ \hline
+    8 primates &  25 & 24 540 556 921 (100\%) & 5 423 003 377 (22.09\%) & 5 401 587 503 (22.01\%) \\ 
+    8 primates & 100 & 24 540 556 846 (100\%) & 1 174 160 336  (4.78\%) &   502 441 107  (2.04\%) \\ \hline
+            
     \end{tabular}
+    }
+    
     
     %\caption{Reduction of junction candidates}
     
@@ -283,7 +336,7 @@
       \item Initial: total number of $k$-mers in dataset
       \item First pass: number of junction candidates (using a bloom filter)
       \item Second pass: real number of junction (using an hash table)
-      \item False positive: 100*(First pass - Second pass)/(First pass)
+      %\item False positive: (Second pass - First pass)
     \end{itemize}
     
 \end{frame}

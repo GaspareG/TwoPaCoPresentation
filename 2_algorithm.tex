@@ -29,7 +29,7 @@
        \DontPrintSemicolon
        \SetKwInOut{Input}{Input}
        \SetKwInOut{Output}{Output}
-       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\ Candidate set of junctions $C_{in}$ (\textbf{for now all positions are marked})}
+       \Input{$S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\$k$ integer, size of $k$-mers\\ $E$ empty set data structure\\$C$ Candidate set of junctions (\textbf{naively all positions are marked})}
        \Output{A reduce candidate set of junctions $C$}
        
        \BlankLine
@@ -149,7 +149,7 @@
        \DontPrintSemicolon
        \SetKwInOut{Input}{Input}
        \SetKwInOut{Output}{Output}
-       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\ Candidate set of junctions $C_{in}$}
+       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\ Candidate set of junctions $C_{in}$ (\textbf{naively all positions are marked})}
        \Output{A reduce candidate set of junctions $C_{out}$}
        
        \BlankLine
@@ -178,6 +178,16 @@
 \begin{frame}
 	\frametitle{The memory issue$^{2}$}
 	\centering
+	
+	How much memory do we use now?
+	
+	\begin{itemize}
+	  \item First pass: 
+	  \item Second pass: 
+	\end{itemize}
+	
+	What if the hash table in the second pass 
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -190,8 +200,36 @@
 	
 	\begin{itemize}
 	  \item Partitionate input $k$-mers in 
-	  \item 
+	  \item ciao
 	\end{itemize}
+	
+	\scalebox{0.7}{                        
+   \begin{algorithm}[H]
+      \small
+       \DontPrintSemicolon
+       \SetKwInOut{Input}{Input}
+       \SetKwInOut{Output}{Output}
+       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\$l$ }
+       \Output{$C_{out}$ all the junctions in the compacted de Bruijn graph}
+       
+       \BlankLine
+       
+       $F \gets$ empty bloom filter of size $b$ \Comment*[r]{First pass}
+       $C_{temp} \gets \textsc{Filter-Junctions}(S, k, F, C_{in})$  \;
+
+       \BlankLine
+
+       $H \gets$ empty hash table \Comment*[r]{Second pass}
+       $C_{out} \gets \textsc{Filter-Junctions}(S, k, H, C_{in})$ \;
+
+       \BlankLine
+              
+       \Return{$C_{out}$}
+       \caption{\textsc{Filter-Junctions-Two-Pass}}
+   \end{algorithm}
+   }
+   
+
 
 \end{frame}
 
