@@ -1,4 +1,5 @@
 \part{The algorithm}
+\section{The algorithm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -181,12 +182,21 @@
 	
 	How much memory do we use now?
 	
-	\begin{itemize}
-	  \item First pass: 
-	  \item Second pass: 
-	\end{itemize}
+	\medskip
 	
-	What if the hash table in the second pass 
+	\begin{itemize}
+	  \item First pass: Bloom filter of size $b$ (of our decision)
+	  \item Second pass: Hash table containing $(k+1)$-mers of junction candidates
+	\end{itemize}
+
+	\medskip
+	
+	We don't know the possible size of the hash table in the second pass. \\
+	What if the hash table is not small enough?
+  
+	\medskip
+
+  Solution: Split the input $k$-mers in chunks and analyze them in multiple rounds.
 
 \end{frame}
 
@@ -194,38 +204,126 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-
-	\frametitle{Multiple rounds: dealing with memory restrictions}
+	\frametitle{$k$-mers splitting}
 	\centering
 	
-	\begin{itemize}
-	  \item Partitionate input $k$-mers in 
-	  \item ciao
-	\end{itemize}
-	
-	\scalebox{0.7}{                        
+		\scalebox{0.7}{                        
    \begin{algorithm}[H]
       \small
        \DontPrintSemicolon
        \SetKwInOut{Input}{Input}
        \SetKwInOut{Output}{Output}
-       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\$l$ }
-       \Output{$C_{out}$ all the junctions in the compacted de Bruijn graph}
+       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\integer $l$, number of rounds }
+       \Output{$(V_{0}, V_{1}, \ldots, V_{l-1} )$ chunks of $k$-mers}
        
        \BlankLine
        
-       $F \gets$ empty bloom filter of size $b$ \Comment*[r]{First pass}
-       $C_{temp} \gets \textsc{Filter-Junctions}(S, k, F, C_{in})$  \;
-
+       $V_{0} \gets \emptyset, V_{1} \gets \emptyset, \ldots, V_{l-1} \gets \emptyset$ \;
+       $c_{0} \gets 0, c_{1} \gets 0, \ldots, c_{q-1} \gets 0$ \;
+       $F \gets$ empty Bloom filter of size $b$\;
+       
+	      \ForEach{$s \in S$}{
+          \For{$1 \leq i < |s| - k $}{
+              \If{$s[i..i+k-1]$ not in $F$}{
+              Insert $s[i..i+k-1]$ in $F$ \;
+              $c_{f(s[i..i+k-1])} \gets c_{f(s[i..i+k-1])} + 1$ \;
+            }
+          }
+        }
+        
+        $T \gets \sum_{0 \leq t < q} c_{t}/l $ \;
+        
        \BlankLine
-
-       $H \gets$ empty hash table \Comment*[r]{Second pass}
-       $C_{out} \gets \textsc{Filter-Junctions}(S, k, H, C_{in})$ \;
+       
+       $acc \gets 0, idx \gets 0$ \;
+       \For{$0 \leq i < q $}{
+         $V_{idx} = V_{idx} \cup \{i\}$ \;
+         $acc \gets acc + c_{i}$ \;
+         \If{$acc > T$}{
+          $acc \gets 0$ \;
+          $idx \gets idx+1$ \;
+         }
+       }
 
        \BlankLine
               
-       \Return{$C_{out}$}
-       \caption{\textsc{Filter-Junctions-Two-Pass}}
+       \Return{$(V_{0}, V_{1}, \ldots, V_{l-1} )$}
+       \caption{\textsc{Round-Splitting}}
+    \end{algorithm}
+    
+    }
+\end{frame}
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+
+	\frametitle{Multiple rounds: dealing with memory restrictions}
+	\centering
+		
+%	\begin{itemize}
+%	  \item Partitionate the input $k$-mers in $l$ (nearly) balanced partition
+%	  \item Analyse each partition with \textsc{Filter-Junctions-Two-Pass}
+%	  \item Merge the results of each rounds and output the real junctions
+%	\end{itemize}
+	
+	\medskip
+	
+	\scalebox{0.6}{                        
+   \begin{algorithm}[H]
+      \small
+       \DontPrintSemicolon
+       \SetKwInOut{Input}{Input}
+       \SetKwInOut{Output}{Output}
+       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\integer $l$, number of rounds }
+       \Output{$C_{final}$ all the junctions in the compacted de Bruijn graph}
+       
+       \BlankLine
+       
+       $V_{0} \gets \emptyset, V_{1} \gets \emptyset, \ldots, V_{l-1} \gets \emptyset$ \;
+       $c_{0} \gets 0, c_{1} \gets 0, \ldots, c_{q-1} \gets 0$ \;
+       $F \gets$ empty Bloom filter of size $b$\;
+       
+	      \ForEach{$s \in S$}{
+          \For{$1 \leq i < |s| - k $}{
+              \If{$s[i..i+k-1]$ not in $F$}{
+              Insert $s[i..i+k-1]$ in $F$ \;
+              $c_{f(s[i..i+k-1])} \gets c_{f(s[i..i+k-1])} + 1$ \;
+            }
+          }
+        }
+        
+        $T \gets \Sigma_{x}{y}$ \;
+        
+       \BlankLine
+       
+       $acc \gets 0, idx \gets 0$ \;
+       \For{$0 \leq i < q $}{
+         $V_{idx} = V_{idx} \cup i$ \;
+         $acc \gets acc + c_{i}$ \;
+         \If{$acc > T$}{
+          $acc \gets 0$ \;
+          $idx \gets idx+1$ \;
+         }
+       }
+       
+       \BlankLine
+
+       $C_{init} \gets$ Boolean array with every position unmarked \;
+       
+       \For{$0 \leq i < l$}{
+         $C_{i} \gets$ mark every position of $C_{init}$ that starts a $k$-mer with hash in $V_{i}$ \;
+         $C_{i} \gets$ \textsc{Filter-Junctions-Two-Pass}($S$, $k$, $b$, $C_{i}$) \;
+       }
+  
+       $C_{final} = \cup C_{i}$ \;
+       
+       \BlankLine
+              
+       \Return{$C_{final}$}
+       \caption{\textsc{TwoPaCo}}
    \end{algorithm}
    }
    
@@ -239,4 +337,17 @@
 \begin{frame}
 	\frametitle{Parallelization scheme}
 	\centering
+	
+	As far we focused in reducing memory. What about the time?
+	
+	\medskip
+	
+	TwoPaCo can be easily parallelizable:
+	
+	\begin{itemize}
+	  \item Parallel for
+	  \item Concurrent bloom filter
+	  \item Concurrent hash table
+	\end{itemize}
+	
 \end{frame}

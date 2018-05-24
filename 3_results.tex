@@ -1,4 +1,5 @@
 \part{Results}
+\section{Results}
 
 \begin{frame}
 	\partpage
@@ -67,6 +68,12 @@
 	\end{itemize}
 	
 	\medskip
+
+	How many $k$-mers? \\
+	
+	$\mathcal{O}(m)$, where $m = \Sigma_{s \in S}{ |s| }$ is the total input size
+	
+	\bigskip
 	
 	How many junction candidates?
 	
@@ -97,7 +104,7 @@
 	
 	\begin{itemize}
 	  \item First pass: insert all $k$-mers in a bloom filter of size $b$ using $h$ hash functions
-	  \item Second pass: iterate over all candidate $k$-mers
+	  \item Second pass: iterate over all \textbf{candidate positions} and query the hash table
 	\end{itemize}
 	
 	\bigskip
@@ -108,10 +115,10 @@
 	
 	\bigskip
 	 
-	How many junction candidates?
+	How many candidate positions?
 	
 	\begin{itemize}
-	  \item Real junction, $J$
+	  \item Real positions, $|G_{c}|$
 	  \item False positive induced from the bloom filter, $FP$
 	\end{itemize}
 
@@ -147,7 +154,7 @@
 	  
     \scalebox{0.85}{                        
   
-  	  \begin{tabular}{ r | r | r }
+  	  \begin{tabular}{ | r | r | r | }
     \hline
     Algorithm  &                      Time complexity &        Memory complexity   \\ \hline
     Sibelia    & $\mathcal{O}(m)$                    & $\mathcal{O}(m)$                     \\
@@ -166,7 +173,7 @@
     \begin{itemize}
       \item $m = \Sigma_{s \in S}{ |s| }$, total input size
       \item $g = \max_{s \in S}{ |s| }$, size of the biggest genoma
-      \item $J$ and $G_{c}$, number of vertex and edge in the de Bruijn Graph
+      \item $J$ and $|G_{c}|$, number of vertex and edge in the de Bruijn Graph
       \item $b$ and $h$, size of the bloom filter table and number of hash functions
       \item $FP$, number of false positives in first pass
     \end{itemize}

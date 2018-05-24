@@ -1,26 +1,27 @@
 1. Introduction
-  O 1. A pan-genomic algorithm
-  O 2. De Bruijn graph
-  O 3. Compacted de Bruijn graph
-  O 4. The problem
-  O 5. Junctions
+  O 1. A pan-genomic algorithm		(mostrare i k-meri di un genoma)
+  O 2. De Bruijn graph			(mostrare de bruijn graph di un genoma)
+  O 3. Compacted de Bruijn graph	(mostrare la costruzione di un de bruijn graph da due genomi)
+  O 5. Junctions			(definizione e disegni)
+  O 4. The problem			(costruzione de Bruijn graph -> trovare i candidati )
 
 2. Algorithm
   X 1. Naive algorithm
   X 2. The memory issue
   X 3. Bloom filter
   X 4. Two Pass version
-  O 5. The memory issue$^2$
-  O 6. Multiple rounds: dealing with memory restrictions
-  O 7. Parallelization scheme
+  O 5. The memory issue$^2$					(spiegare la memoria usata)
+  O 6. Multiple rounds: dealing with memory restrictions	(copiare l'algoritmo)
+  O 7. Parallelization scheme					(spiegare come ridurre anche il tempo)
 
 3. Results
-  X 1. Source code \& Dataset
+  X 1. Source code \& Dataset		(fix credits dataset)
   X 2. Memory complexity
-  X 3. Time complexity
+  X 3. Time complexity			(fix time analysis)
   X 4. Complexity comparison
   X 5. Running time comparison
   X 5. Fixed memory
-  X 6. Parallel scalability
+  X 6. Parallel scalability		(fix plot)
   X 7. Bloom Filter False positive
+
 
