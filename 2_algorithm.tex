@@ -16,13 +16,14 @@
 	\frametitle{Naive algorithm}
 	\centering
 	
+	
 	\begin{itemize}
 	  \item Store all $(k+1)$-mers in a hash table
 	  \item For each $k$-mers query the possible edge
 	  \item If only 1 in and 1 out edge, unmark as a junction
 	\end{itemize}
 	   
-	\medskip
+	%\medskip
 	
    \scalebox{.55}{                        
    \begin{algorithm}[H]
@@ -213,15 +214,17 @@
        \DontPrintSemicolon
        \SetKwInOut{Input}{Input}
        \SetKwInOut{Output}{Output}
-       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\integer $l$, number of rounds }
+       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\integer $l$, number of rounds\\function $f(x)$, from $k$-mers to integers}
        \Output{$(V_{0}, V_{1}, \ldots, V_{l-1} )$ chunks of $k$-mers}
        
        \BlankLine
        
-       $V_{0} \gets \emptyset, V_{1} \gets \emptyset, \ldots, V_{l-1} \gets \emptyset$ \;
-       $c_{0} \gets 0, c_{1} \gets 0, \ldots, c_{q-1} \gets 0$ \;
+       $V_{0} \gets \emptyset, V_{1} \gets \emptyset, \ldots, V_{l-1} \gets \emptyset$ \Comment*[r]{Chunks, initially empty}
+       $c_{0} \gets 0, c_{1} \gets 0, \ldots, c_{q-1} \gets 0$ \Comment*[r]{Counters, for balancing $k$-mers}
        $F \gets$ empty Bloom filter of size $b$\;
        
+        \BlankLine
+
 	      \ForEach{$s \in S$}{
           \For{$1 \leq i < |s| - k $}{
               \If{$s[i..i+k-1]$ not in $F$}{
@@ -231,17 +234,17 @@
           }
         }
         
-        $T \gets \sum_{0 \leq t < q} c_{t}/l $ \;
+       $T \gets \sum_{0 \leq t < q} c_{t}/l $  \Comment*[r]{Average size of a chunk}
         
        \BlankLine
        
-       $acc \gets 0, idx \gets 0$ \;
+       $acc \gets 0, idx \gets 0$ \Comment*[r]{Create nearly balanced chunks}
        \For{$0 \leq i < q $}{
          $V_{idx} = V_{idx} \cup \{i\}$ \;
          $acc \gets acc + c_{i}$ \;
          \If{$acc > T$}{
           $acc \gets 0$ \;
-          $idx \gets idx+1$ \;
+          $idx \gets \min(idx+1, l-1)$ \Comment*[r]{Next chunk, until reach $l-1$}
          }
        }
 
@@ -263,62 +266,38 @@
 	\frametitle{Multiple rounds: dealing with memory restrictions}
 	\centering
 		
-%	\begin{itemize}
-%	  \item Partitionate the input $k$-mers in $l$ (nearly) balanced partition
-%	  \item Analyse each partition with \textsc{Filter-Junctions-Two-Pass}
-%	  \item Merge the results of each rounds and output the real junctions
-%	\end{itemize}
+	\begin{itemize}
+	  \item Partitionate the input with \textsc{Round-Splitting}
+	  \item Analyse each partition with \textsc{Filter-Junctions-Two-Pass}
+	  \item Merge the results of each rounds and output the real junctions
+	\end{itemize}
 	
 	\medskip
 	
-	\scalebox{0.6}{                        
+	\scalebox{0.75}{                        
    \begin{algorithm}[H]
       \small
        \DontPrintSemicolon
        \SetKwInOut{Input}{Input}
        \SetKwInOut{Output}{Output}
-       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\integer $l$, number of rounds }
+       \Input{strings $S = \{s_{1}, ..., s_{m}\}$ genoma sequences\\integer $k$, size of $k$-mers\\integer $b$, size of bloom filter\\integer $l$, number of rounds\\function $f(x)$, from $k$-mers to integers }
        \Output{$C_{final}$ all the junctions in the compacted de Bruijn graph}
        
        \BlankLine
        
-       $V_{0} \gets \emptyset, V_{1} \gets \emptyset, \ldots, V_{l-1} \gets \emptyset$ \;
-       $c_{0} \gets 0, c_{1} \gets 0, \ldots, c_{q-1} \gets 0$ \;
-       $F \gets$ empty Bloom filter of size $b$\;
-       
-	      \ForEach{$s \in S$}{
-          \For{$1 \leq i < |s| - k $}{
-              \If{$s[i..i+k-1]$ not in $F$}{
-              Insert $s[i..i+k-1]$ in $F$ \;
-              $c_{f(s[i..i+k-1])} \gets c_{f(s[i..i+k-1])} + 1$ \;
-            }
-          }
-        }
-        
-        $T \gets \Sigma_{x}{y}$ \;
-        
-       \BlankLine
-       
-       $acc \gets 0, idx \gets 0$ \;
-       \For{$0 \leq i < q $}{
-         $V_{idx} = V_{idx} \cup i$ \;
-         $acc \gets acc + c_{i}$ \;
-         \If{$acc > T$}{
-          $acc \gets 0$ \;
-          $idx \gets idx+1$ \;
-         }
-       }
-       
-       \BlankLine
-
+       $(V_{0}, V_{1}, \ldots, V_{l-1} ) \gets \textsc{Round-Splitting}$($S$, $k$, $b$, $l$, $f$) \;
        $C_{init} \gets$ Boolean array with every position unmarked \;
+
+       \BlankLine
        
        \For{$0 \leq i < l$}{
          $C_{i} \gets$ mark every position of $C_{init}$ that starts a $k$-mer with hash in $V_{i}$ \;
          $C_{i} \gets$ \textsc{Filter-Junctions-Two-Pass}($S$, $k$, $b$, $C_{i}$) \;
        }
+
+       \BlankLine
   
-       $C_{final} = \cup C_{i}$ \;
+       $C_{final} = \bigcup{C_{i}}$ \;
        
        \BlankLine
               
@@ -346,8 +325,9 @@
 	
 	\begin{itemize}
 	  \item Parallel for
-	  \item Concurrent bloom filter
-	  \item Concurrent hash table
+	  \item Concurrent bloom filter (parallel insert and search)
+	  \item Concurrent hash table (parallel insert and search)
 	\end{itemize}
+	
 	
 \end{frame}

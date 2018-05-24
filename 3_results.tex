@@ -20,31 +20,25 @@
 	https://github.com/medvedevgroup/TwoPaCo \\
 	
 	\medskip
-	
-	$\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_$ \\
-	
+  \noindent\rule{4cm}{0.4pt}
 	\medskip
-
+	
 	Personal implementation available on:\\
-	
 	\medskip
-	
 	https://github.com/GaspareG/TwoPaCo
 	
 	\medskip
-	
-	$\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_$ \\
-
+  \noindent\rule{4cm}{0.4pt}
 	\medskip
 		
 	Dataset for experiments:
 
 	\medskip
 	
-	5 humans (from human reference genome)\\
-  8 primates (from ...)\\
-	62 Escherichia coli (from ...)\\
-  100 simulated human (from ...)\\
+	62 Escherichia coli ($\sim$300Mb)\\
+	5 humans ($\sim$21Gb)\\
+  8 primates ($\sim$23Gb)\\
+  100 simulated human ($\sim$400Gb)
 	
 	
 \end{frame}
@@ -68,12 +62,6 @@
 	\end{itemize}
 	
 	\medskip
-
-	How many $k$-mers? \\
-	
-	$\mathcal{O}(m)$, where $m = \Sigma_{s \in S}{ |s| }$ is the total input size
-	
-	\bigskip
 	
 	How many junction candidates?
 	
@@ -237,7 +225,7 @@
 	\frametitle{Fixed memory}
 	\centering
 	
-	How many rounds do we need to compress the graph\\ without exceeding a given memory threshold?
+	In how many rounds do we need to split the input\\ to not exceeding a given memory threshold?
 	
 	\bigskip
 	
@@ -265,20 +253,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}
-	\frametitle{Parallel scalability}
-	\centering
-	
-	How does the performance of TwoPaCo improve \\to the increasing of working threads?
-	 
-	\includegraphics[height=5cm]{images/scalability}
-	
-	\begin{itemize}
-	  \item First pass: great improvement thanks to concurrent bloom filter
-	  \item Second pass: slight improvement due to race-conditions on the hash table
-	  \item Edge construction: great improvement thanks to $k$-mers independency
-	\end{itemize}
-\end{frame}
+%\begin{frame}
+%	\frametitle{Parallel scalability}
+%	\centering
+%	
+%	How does the performance of TwoPaCo improve \\to the increasing of working threads?
+%	 
+%	\includegraphics[height=5cm]{images/scalability}
+%	
+%	\begin{itemize}
+%	  \item First pass: great improvement thanks to concurrent bloom filter
+%	  \item Second pass: slight improvement due to race-conditions on the hash table
+%	  \item Edge construction: great improvement thanks to $k$-mers independency
+%	\end{itemize}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
