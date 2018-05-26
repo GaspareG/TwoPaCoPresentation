@@ -18,9 +18,9 @@
 	
 	
 	\begin{itemize}
-	  \item Store all $(k+1)$-mers in a hash table
-	  \item For each $k$-mers query the possible edge
-	  \item If only 1 in and 1 out edge, unmark as a junction
+	  \item[\textcolor{orange}{\textbullet}] Store all $(k+1)$-mers in a hash table
+	  \item[\textcolor{green}{\textbullet}] For each $k$-mers query the possible edges
+	  \item[\textcolor{blue}{\textbullet}] If only 1 in and 1 out edge, unmark as a junction
 	\end{itemize}
 	   
 	%\medskip
@@ -36,9 +36,9 @@
        
        \BlankLine
        \ForEach{$s \in S$}{
-        \For{$1 \leq i < |s| - k $}{
-          \If{$C[s,i] = marked$}{ 
-            $E \gets E \cup  s[i..i+k] \cup  s[i-1..i+k-1]$ \Comment*[r]{Store all $(k+1)$-mers}
+       \For{$1 \leq i < |s| - k $}{
+        \If{$C[s,i] = marked$}{ 
+        \HiLiR $E \gets E \cup  s[i..i+k] \cup  s[i-1..i+k-1]$ \Comment*[r]{Store all $(k+1)$-mers}
           }
         }
        }
@@ -49,17 +49,17 @@
           
             $(in, out) \gets (0, 0)$ \Comment*[r]{Count in/out edges}
             
-            \ForEach{$c \in \{A, C, G, T\}$}{
-              \If{$v \cdot c \in E$}{
-                $in \gets in + 1$\;
+            \HiLiG\ForEach{$c \in \{A, C, G, T\}$}{
+              \HiLiG \If{$v \cdot c \in E$}{
+              \HiLiG$in \gets in + 1$\;
               }
-              \If{$c \cdot v \in E$}{
-                $out \gets out + 1$\;
+              \HiLiG \If{$c \cdot v \in E$}{
+              \HiLiG$out \gets out + 1$\;
               }
             }
             
-            \If{$(in, out) = (1,1)$}{
-              $C[s,i] = unmarked$ \Comment*[r]{surely not a junction}
+            \HiLiB \If{$(in, out) = (1,1)$}{
+            \HiLiB $C[s,i] = unmarked$ \Comment*[r]{surely not a junction}
             }
           }
         }
@@ -328,6 +328,10 @@
 	  \item Concurrent bloom filter (parallel insert and search)
 	  \item Concurrent hash table (parallel insert and search)
 	\end{itemize}
+	
+	We made a clever usage of the concurrent data structs:
+	
+	
 	
 	
 \end{frame}

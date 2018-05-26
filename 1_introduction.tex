@@ -21,8 +21,38 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-	\frametitle{De Bruijn graph}
+	\frametitle{de Bruijn graph}
 	\centering
+	  
+  Sequence \#1: {\color{red} TGACGTC} ($2$-mers: {\color{red} TG GA AC CG GT TC})
+  
+  \medskip
+
+	\includegraphics[height=0.7cm]{images/debruin-0}
+
+  \medskip
+  
+  Sequence \#2: {\color{blue}TGACGTC} ($2$-mers: {\color{blue} TG GA AC CT TT TC})
+	
+	\medskip
+	
+	\includegraphics[height=0.7cm]{images/debruin-1}
+	
+	\medskip
+	
+	Find common vertices
+
+	\medskip
+  \includegraphics[height=1.5cm]{images/debruin-2}
+
+  \medskip
+  
+  Merge them
+	\medskip
+
+	\includegraphics[height=1.3cm]{images/debruin-3}
+
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,15 +61,37 @@
 \begin{frame}
 	\frametitle{Compacted de Bruijn graph}
 	\centering
+	
+  To compact the de Bruijn graph we need to find the junctions
+  
+  \medskip
+  
+  A vertex is a junction if :
+  
+  Is the initial or final part of some sequence\\
+  Has more than 1 in-edge or more than 1 out-edge\\
+	
+	\medskip
+
+	\includegraphics[height=2cm]{images/debruin-3a}
+
+	\medskip
+
+  Remove simple paths by connect junctions  	
+
+	\medskip
+
+	\includegraphics[height=1.5cm]{images/debruin-4}
+	
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}
-	\frametitle{Junctions}
-	\centering
-\end{frame}
+%\begin{frame}
+%	\frametitle{Junctions}
+%	\centering
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,5 +100,24 @@
 	\frametitle{The problem}
 	\centering
 	
+	How to construct the compacted de Bruijn graph,\\ from many complete genomes,\\ avoiding the ordinary graph construction?
+	
+	\medskip
+	
+	$\downarrow$
+	
+	\medskip
+
+  
+  \textbf{Which $k$-mers are junctions?}
+  
+  \medskip
+  
+  +
+  
+  \medskip
+  
+  How to construct the compacted de Bruijn graph given the junctions?
+  
 	
 \end{frame}
