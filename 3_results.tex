@@ -62,11 +62,13 @@
 	\medskip
 	
 	\begin{itemize}
-	  \item[\textcolor{green}{\textbullet}] First pass: insert all $k$-mers in a bloom filter of size $b$
+	  \item[\textcolor{green}{\textbullet}] First pass: insert all $k$-mers in a bloom filter of \textbf{size $b$}
 	  \item[\textcolor{orange}{\textbullet}] Second pass: store all \textbf{junction candidates} in a hash table
 	\end{itemize}
 	
 	\medskip
+	
+	\pause
 	
 	How many junction candidates?
 	
@@ -76,6 +78,8 @@
 	\end{itemize}
 
 	\medskip
+	
+	\pause
 	
 	Result: $\mathcal{O}(\max\{{\color{green}b}, {\color{orange}(J+FP)k}\})$
 	
@@ -96,11 +100,13 @@
 	\bigskip
 	
 	\begin{itemize}
-	  \item[\textcolor{green}{\textbullet}]First pass: insert all $k$-mers in a bloom filter using $h$ hash functions
+	  \item[\textcolor{green}{\textbullet}]First pass: \textbf{insert all $k$-mers} in a bloom filter using $h$ hash functions
 	  \item[\textcolor{orange}{\textbullet}] Second pass: iterate over all \textbf{candidate positions} and query the hash table
 	\end{itemize}
 	
 	\bigskip
+	
+	\pause
 	
 	How many $k$-mers? \\
 	
@@ -108,6 +114,8 @@
 	
 	\bigskip
 	 
+	\pause
+	
 	How many candidate positions?
 	
 	\begin{itemize}
@@ -116,6 +124,8 @@
 	\end{itemize}
 
 	\medskip
+	
+	\pause
 	
 	Result: $\mathcal{O}({\color{green}mh} + {\color{orange}(|G_{c}| + FP)k})$
 	
@@ -141,7 +151,7 @@
 	    \item bwt-based (Baier, Beller, Ohlebusch, 2015)
 	  \end{itemize}
 
-	%\pause	
+	  \pause	
 	
 	  \medskip
 	  
@@ -183,6 +193,8 @@
 
   What are the practical performances of TwoPaCo against the state of the art? \\
 
+  \pause
+  
   \medskip  	
 
 	  \scalebox{.7}{                        
@@ -192,14 +204,14 @@
     Dataset    &  Sibelia &   SplitMEM &     bwt-based &  \multicolumn{2}{c|}{TwoPaCo} \\ \hline
     \multicolumn{4}{| r |}{}                           & 1 thread & 15 thread\\ \hline
                
-    62 E.coli (k=25)   & 0 (12.2) & 70 ({\color{red}178.0}) &      8 (0.85) &    4 ({\color{green}0.16}) & 2 (0.39) \\
-    62 E.coli (k=100)  &  8 (7.6) & 67 ({\color{red}178.0}) &      8 (0.50) &    4 ({\color{green}0.19}) & 2 (0.39) \\ \hline
+    62 E.coli (k=25)   & 10 ({\color{orange}12.2}) & 70 ({\color{red}178.0}) &      8 ({\color{orange}0.85}) &    4 ({\color{green}0.16}) & 2 (0.39) \\
+    62 E.coli (k=100)  &   8 ({\color{orange}7.6}) & 67 ({\color{red}178.0}) &      8 ({\color{orange}0.50}) &    4 ({\color{green}0.19}) & 2 (0.39) \\ \hline
     
     7 humans (k=25)    &        - &          - &  867 ({\color{red}100.30}) &  436 ({\color{green}4.40}) & 63 (4.84) \\ 
     7 humans (k=100)   &        - &          - &   807 ({\color{red}46.02}) &  317 ({\color{green}8.42}) & 57 (8.75) \\ \hline
     
-    8 primates (k=25)  &        - &          - &             - & 914 (34.36) & 111 (34.36) \\
-    8 primates (k=100) &        - &          - &             - & 756 (56.06) & 101 (61.68) \\ \hline
+    8 primates (k=25)  &        - &          - &             - & 914 ({\color{green}34.36}) & 111 (34.36) \\
+    8 primates (k=100) &        - &          - &             - & 756 ({\color{green}56.06}) & 101 (61.68) \\ \hline
     
     50 humans (k=25)   &        - &          - &             - &          -  & 705 (69.77) \\
     50 humans (k=100)  &        - &          - &             - &          -  & 927 (70.21) \\ \hline
@@ -232,8 +244,10 @@
 	
 	In how many rounds do we need to split the input\\ to not exceeding a given memory threshold?
 	
+	\pause
+
 	\bigskip
-	
+		
 	\begin{tabular}{ | r | r | r | r | r | }
   \hline
   Threshold  & Used memory & Bloom filter size & Running time & Rounds \\ \hline
@@ -246,11 +260,13 @@
   
   \medskip
   
-  Experiments on 5 simulated human genomes, $k = 25$, 8 threads.
+  Experiments on 5 simulated human genomes, $k = 25$, 8 threads
   
   \medskip
   
-  Result: we can trade-off memory for time.
+  \pause
+  
+  Result: \textbf{we can trade-off memory for time}
   
 
 \end{frame}
@@ -281,6 +297,8 @@
 	\centering
 	
 	  Is the Bloom Filter really efficient in reducing junction candidates?
+	  
+	  \pause
 	  
     \bigskip
 	  
@@ -317,16 +335,15 @@
     \hline
                &     &                                  \multicolumn{3}{ c }{Junction candidates} \\ \hline
     Dataset    &   k &                Initial &              First pass &             Second pass \\ \hline
-    62 E.coli  &  25 &    310 157 564 (100\%) &    24 649 489  ({\color{orange}7.94\%}) &    24 572 562  ({\color{green}7.92\%}) \\ 
+    62 E.coli  &  25 &    310 157 564 ({\color{red}100\%}) &    24 649 489  ({\color{orange}7.94\%}) &    24 572 562  ({\color{green}7.92\%}) \\ 
     62 E.coli  & 100 &    310 157 489 (100\%) &    22 848 018  (7.36\%) &     9 492 091  (3.06\%) \\ \hline
-    7 humans   &  25 & 21 201 290 922 (100\%) & 3 489 946 013 ({\color{orange}16.46\%}) & 2 974 098 154 ({\color{green}14.02\%}) \\ 
+    7 humans   &  25 & 21 201 290 922 ({\color{red}100\%}) & 3 489 946 013 ({\color{orange}16.46\%}) & 2 974 098 154 ({\color{green}14.02\%}) \\ 
     7 humans   & 100 & 21 201 290 847 (100\%) & 1 374 287 870  (6.48\%) &   188 224 214  (0.88\%) \\ \hline
-    8 primates &  25 & 24 540 556 921 (100\%) & 5 423 003 377 ({\color{orange}22.09\%}) & 5 401 587 503 ({\color{green}22.01\%}) \\ 
+    8 primates &  25 & 24 540 556 921 ({\color{red}100\%}) & 5 423 003 377 ({\color{orange}22.09\%}) & 5 401 587 503 ({\color{green}22.01\%}) \\ 
     8 primates & 100 & 24 540 556 846 (100\%) & 1 174 160 336  (4.78\%) &   502 441 107  (2.04\%) \\ \hline
             
     \end{tabular}
     }
-    
     
     %\caption{Reduction of junction candidates}
     
@@ -338,5 +355,21 @@
       \item Second pass: real number of junction (using an hash table)
       %\item False positive: (Second pass - First pass)
     \end{itemize}
-    
+        
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\frametitle{Conclusion}
+	\centering
+
+  \begin{itemize}
+    \item Lowest time/memory usage in the state of the art
+    \item Highly scalable (best performance with multi-thread CPUs)
+    \item Time/memory trade-off (suitable for small computer)
+    \item Bloom filter perform very well in practice
+  \end{itemize}
+
 \end{frame}

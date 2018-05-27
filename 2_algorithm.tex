@@ -92,6 +92,8 @@
      
 	 \centering
 
+  \pause
+  
     \bigskip
 
     We don't really need and, in almost all pratical cases, \\ we can't store all the possible $(k+1)$-mers.
@@ -195,9 +197,11 @@
 	We don't know the possible size of the hash table in the second pass. \\
 	What if the hash table is not small enough?
   
+  \pause 
+  
 	\medskip
 
-  Solution: Split the input $k$-mers in chunks and analyze them in multiple rounds.
+  \textbf{Solution}: Split the input $k$-mers in chunks and analyze them in multiple rounds.
 
   \medskip
   
@@ -249,7 +253,13 @@
 	\frametitle{$k$-mers splitting}
 	\centering
 	
-		\scalebox{0.7}{                        
+	\begin{itemize}
+	  \item[\textcolor{orange}{\textbullet}] Count how many $k$-mers are mapped in each of the $c$ hash value ($c = 2^{l}$)
+	  \item[\textcolor{green}{\textbullet}] Iterate over all the hash value and insert them in the current chunk
+	  \item[\textcolor{blue}{\textbullet}] If the size of current chunks exceeds the average pass to the next chunk
+	\end{itemize}
+
+		\scalebox{0.65}{                        
    \begin{algorithm}[H]
       \small
        \DontPrintSemicolon
@@ -262,30 +272,30 @@
        
        $V_{0} \gets \emptyset, V_{1} \gets \emptyset, \ldots, V_{l-1} \gets \emptyset$ \Comment*[r]{Chunks, initially empty}
        $c_{0} \gets 0, c_{1} \gets 0, \ldots, c_{q-1} \gets 0$ \Comment*[r]{Counters, for balancing $k$-mers}
-       $F \gets$ empty Bloom filter of size $b$\;
+       %$F \gets$ empty Bloom filter of size $b$\;
        
         \BlankLine
-
-	      \ForEach{$s \in S$}{
-          \For{$1 \leq i < |s| - k $}{
-              \If{$s[i..i+k-1]$ not in $F$}{
-              Insert $s[i..i+k-1]$ in $F$ \;
-              $c_{f(s[i..i+k-1])} \gets c_{f(s[i..i+k-1])} + 1$ \;
-            }
-          }
-        }
         
-       $T \gets \sum_{0 \leq t < q} c_{t}/l $  \Comment*[r]{Average size of a chunk}
+       \HiLiR$c_{i} \gets | \{$ $k$-mer $x \mid f(x) = i$ \} $|$ \;
+
+	     % \ForEach{$s \in S$}{
+       %   \For{$1 \leq i < |s| - k $}{
+       %       \If{$s[i..i+k-1]$ not in $F$}{
+       %       Insert $s[i..i+k-1]$ in $F$ \;
+       %       $c_{f(s[i..i+k-1])} \gets c_{f(s[i..i+k-1])} + 1$ \;
+       %     }
+       %   }
+       % }
+        
+       \HiLiR$T \gets \sum_{0 \leq t < q} c_{t}/l $  \Comment*[r]{Average size of a chunk}
         
        \BlankLine
        
-       $acc \gets 0, idx \gets 0$ \Comment*[r]{Create nearly balanced chunks}
+       $idx \gets 0$ \;
        \For{$0 \leq i < q $}{
-         $V_{idx} = V_{idx} \cup \{i\}$ \;
-         $acc \gets acc + c_{i}$ \;
-         \If{$acc > T$}{
-          $acc \gets 0$ \;
-          $idx \gets \min(idx+1, l-1)$ \Comment*[r]{Next chunk, until reach $l-1$}
+         \HiLiG$V_{idx} = V_{idx} \cup \{i\}$ \Comment*[r]{Add $i$ to the current chunk}
+         \HiLiB\If{$|V_{idx}| \geq T$}{
+          \HiLiB$idx \gets \min(idx+1, l-1)$ \Comment*[r]{Next chunk, until reach $l-1$}
          }
        }
 
@@ -361,6 +371,8 @@
 	
 	As far we focused in reducing memory. What about the time?
 	
+	\pause
+	
 	\bigskip
 	
 	TwoPaCo can be easily parallelizable:
@@ -370,6 +382,8 @@
 	  \item Concurrent bloom filter (parallel insert and search)
 	  \item Concurrent hash table (parallel insert and search)
 	\end{itemize}
+	
+	\pause
 	
 	\medskip
 	

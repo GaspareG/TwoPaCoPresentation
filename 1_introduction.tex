@@ -30,14 +30,16 @@
   	
 	\includegraphics[height=0.4cm]{images/gen2}
 	
+	\pause
+	
 	\medskip
 
   What we want to see:
   
   \begin{itemize}
-    \item Similarities
-    \item Differences
-    \item Duplications
+    \item {\color{orange}Similarities}
+    \item {\color{purple}Differences}
+    \item {\color{green}Duplications}
   \end{itemize}	
 	
 	\medskip
@@ -53,20 +55,22 @@
 	\frametitle{de Bruijn graph}
 	\centering
 	  
-  Sequence \#1: {\color{red} TGACGTC} ($2$-mers: {\color{red} TG GA AC CG GT TC})
-  
+  Sequence \#1: {\color{red}TGACGTC} ($2$-mers: {\color{red} TG GA AC CG GT TC})
+                            
   \medskip
 
 	\includegraphics[height=0.7cm]{images/debruin-0}
 
   \medskip
   
-  Sequence \#2: {\color{blue}TGACGTC} ($2$-mers: {\color{blue} TG GA AC CT TT TC})
+  Sequence \#2: {\color{blue}TGACTTC} ($2$-mers: {\color{blue} TG GA AC CT TT TC})
 	
 	\medskip
 	
 	\includegraphics[height=0.7cm]{images/debruin-1}
 	
+	\pause
+
 	\medskip
 	
 	Find common vertices
@@ -74,6 +78,8 @@
 	\medskip
   \includegraphics[height=1.5cm]{images/debruin-2}
 
+	\pause
+	                           
   \medskip
   
   Merge them
@@ -104,6 +110,8 @@
 
 	\includegraphics[height=2cm]{images/debruin-3a}
 
+  \pause
+
 	\medskip
 
   Remove simple paths by connect junctions  	
@@ -130,6 +138,8 @@
 	\centering
 	
 	How to construct the compacted de Bruijn graph,\\ from many complete genomes,\\ avoiding the ordinary graph construction?
+	
+	\pause
 	
 	\medskip
 	
