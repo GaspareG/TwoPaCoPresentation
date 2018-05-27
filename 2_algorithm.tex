@@ -141,8 +141,8 @@
 	\centering
 	
 	\begin{itemize}
-	  \item First pass: Select a set of junction candidates by insert all the $(k+1)$-mers in a bloom filter of choosing size
-	  \item Second pass: Filter out the false positive by storing the reduce sets of $(k+1)$-mers in an hash table
+	  \item[\textcolor{orange}{\textbullet}] First pass: Select a set of junction candidates by insert all the $(k+1)$-mers in a bloom filter of choosing size
+	  \item[\textcolor{green}{\textbullet}] Second pass: Filter out the false positive by storing the reduce sets of $(k+1)$-mers in an hash table
 	\end{itemize}
 
    \scalebox{.8}{                        
@@ -156,13 +156,13 @@
        
        \BlankLine
        
-       $F \gets$ empty bloom filter of size $b$ \Comment*[r]{First pass}
-       $C_{temp} \gets \textsc{Filter-Junctions}(S, k, F, C_{in})$  \;
+       \HiLiR$F \gets$ empty bloom filter of size $b$ \Comment*[r]{First pass}
+       \HiLiR$C_{temp} \gets \textsc{Filter-Junctions}(S, k, F, C_{in})$  \;
 
        \BlankLine
 
-       $H \gets$ empty hash table \Comment*[r]{Second pass}
-       $C_{out} \gets \textsc{Filter-Junctions}(S, k, H, C_{in})$ \;
+       \HiLiG$H \gets$ empty hash table \Comment*[r]{Second pass}
+       \HiLiG$C_{out} \gets \textsc{Filter-Junctions}(S, k, H, C_{in})$ \;
 
        \BlankLine
               
@@ -199,6 +199,47 @@
 
   Solution: Split the input $k$-mers in chunks and analyze them in multiple rounds.
 
+  \medskip
+  
+  Split \textit{TGACTACTGAC} in $3$ chunks of $3$-mers: \\
+  
+  \medskip
+  
+  \st{
+  Wrong: \{
+    {\color{red}TGA} 
+    {\color{blue}GAC}
+    {\color{pink}ACT}
+  \}, 
+  \{
+    {\color{green}CTA} 
+    {\color{darkgreen}TAC}
+    {\color{pink}ACT}
+  \}, 
+  \{
+    {\color{orange}CTG} 
+    {\color{red}TGA} 
+    {\color{blue}GAC}
+  \}
+  }
+  
+  \medskip
+  
+  Correct: \{
+    {\color{red}TGA} 
+    {\color{red}TGA} 
+    {\color{orange}CTG} 
+  \}, 
+  \{
+    {\color{blue}GAC}
+    {\color{blue}GAC}
+    {\color{green}CTA} 
+  \}, 
+  \{
+    {\color{pink}ACT}
+    {\color{pink}ACT}
+    {\color{darkgreen}TAC} 
+  \}  
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -267,9 +308,9 @@
 	\centering
 		
 	\begin{itemize}
-	  \item Partitionate the input with \textsc{Round-Splitting}
-	  \item Analyse each partition with \textsc{Filter-Junctions-Two-Pass}
-	  \item Merge the results of each rounds and output the real junctions
+	  \item[\textcolor{orange}{\textbullet}] Partitionate the input with \textsc{Round-Splitting}
+	  \item[\textcolor{green}{\textbullet}] Analyse each partition with \textsc{Filter-Junctions-Two-Pass}
+	  \item[\textcolor{blue}{\textbullet}] Merge the results of each rounds and output the real junctions
 	\end{itemize}
 	
 	\medskip
@@ -285,19 +326,20 @@
        
        \BlankLine
        
-       $(V_{0}, V_{1}, \ldots, V_{l-1} ) \gets \textsc{Round-Splitting}$($S$, $k$, $b$, $l$, $f$) \;
+       \HiLiR$(V_{0}, V_{1}, \ldots, V_{l-1} ) \gets \textsc{Round-Splitting}$($S$, $k$, $b$, $l$, $f$) \Comment*[r]{Create chunks}
        $C_{init} \gets$ Boolean array with every position unmarked \;
 
        \BlankLine
        
-       \For{$0 \leq i < l$}{
-         $C_{i} \gets$ mark every position of $C_{init}$ that starts a $k$-mer with hash in $V_{i}$ \;
-         $C_{i} \gets$ \textsc{Filter-Junctions-Two-Pass}($S$, $k$, $b$, $C_{i}$) \;
+       \HiLiG\For{$0 \leq i < l$\Comment*[r]{For each chunks}}
+       {
+       \HiLiG  $C_{i} \gets$ mark every position of $C_{init}$ that starts a $k$-mer with hash in $V_{i}$ \;
+       \HiLiG$C_{i} \gets$ \textsc{Filter-Junctions-Two-Pass}($S$, $k$, $b$, $C_{i}$) \Comment*[r]{Find junctions}
        }
 
        \BlankLine
   
-       $C_{final} = \bigcup{C_{i}}$ \;
+       \HiLiB$C_{final} = \bigcup{C_{i}}$ \Comment*[r]{Merge junctions of each chunks}
        
        \BlankLine
               
@@ -319,18 +361,24 @@
 	
 	As far we focused in reducing memory. What about the time?
 	
-	\medskip
+	\bigskip
 	
 	TwoPaCo can be easily parallelizable:
 	
 	\begin{itemize}
-	  \item Parallel for
+	  \item Parallel for loops (OpenMP, TBB, ...)
 	  \item Concurrent bloom filter (parallel insert and search)
 	  \item Concurrent hash table (parallel insert and search)
 	\end{itemize}
 	
+	\medskip
+	
 	We made a clever usage of the concurrent data structs:
 	
+	\begin{itemize}
+	  \item Only insertion in the first part
+	  \item Only query in the second part (static table, no race conditions)
+	\end{itemize}
 	
 	
 	

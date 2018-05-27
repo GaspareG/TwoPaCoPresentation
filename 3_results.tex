@@ -17,15 +17,20 @@
 	
 	\medskip
 	
-	https://github.com/medvedevgroup/TwoPaCo \\
+	{\color{blue}https://github.com/medvedevgroup/TwoPaCo} \\
 	
 	\medskip
   \noindent\rule{4cm}{0.4pt}
 	\medskip
 	
-	Personal implementation available on:\\
+	Personal implementation and presentation available on:\\
 	\medskip
-	https://github.com/GaspareG/TwoPaCo
+
+	{\color{blue}https://github.com/GaspareG/TwoPaCo}
+
+	\medskip
+	
+	{\color{blue}https://github.com/GaspareG/TwoPaCoPresentation}
 	
 	\medskip
   \noindent\rule{4cm}{0.4pt}
@@ -35,10 +40,10 @@
 
 	\medskip
 	
-	62 Escherichia coli ($\sim$300Mb)\\
-	5 humans ($\sim$21Gb)\\
-  8 primates ($\sim$23Gb)\\
-  100 simulated human ($\sim$400Gb)
+	62 Escherichia coli ({\color{green}$\sim$300Mb})\\
+	5 humans ({\color{orange}$\sim$21Gb})\\
+  8 primates ({\color{orange}$\sim$23Gb})\\
+  100 simulated human ({\color{red}$\sim$400Gb})
 	
 	
 \end{frame}
@@ -57,8 +62,8 @@
 	\medskip
 	
 	\begin{itemize}
-	  \item First pass: insert all $k$-mers in a bloom filter of size $b$
-	  \item Second pass: store all \textbf{junction candidates} in a hash table
+	  \item[\textcolor{green}{\textbullet}] First pass: insert all $k$-mers in a bloom filter of size $b$
+	  \item[\textcolor{orange}{\textbullet}] Second pass: store all \textbf{junction candidates} in a hash table
 	\end{itemize}
 	
 	\medskip
@@ -72,7 +77,7 @@
 
 	\medskip
 	
-	Result: $\mathcal{O}(\max\{b, (J+FP)k\})$
+	Result: $\mathcal{O}(\max\{{\color{green}b}, {\color{orange}(J+FP)k}\})$
 	
 	
 \end{frame}
@@ -86,13 +91,13 @@
 
   \centering
 	
-	The memory complexity is the sum \\ between the first and the second pass of TwoPaCo \\
+	The time complexity is the sum \\ between the first and the second pass of TwoPaCo \\
 	
 	\bigskip
 	
 	\begin{itemize}
-	  \item First pass: insert all $k$-mers in a bloom filter of size $b$ using $h$ hash functions
-	  \item Second pass: iterate over all \textbf{candidate positions} and query the hash table
+	  \item[\textcolor{green}{\textbullet}]First pass: insert all $k$-mers in a bloom filter using $h$ hash functions
+	  \item[\textcolor{orange}{\textbullet}] Second pass: iterate over all \textbf{candidate positions} and query the hash table
 	\end{itemize}
 	
 	\bigskip
@@ -112,7 +117,7 @@
 
 	\medskip
 	
-	Result: $\mathcal{O}(mh + (|G_{c}| + FP)k)$
+	Result: $\mathcal{O}({\color{green}mh} + {\color{orange}(|G_{c}| + FP)k})$
 	
 	
 \end{frame}
@@ -145,9 +150,9 @@
   	  \begin{tabular}{ | r | r | r | }
     \hline
     Algorithm  &                      Time complexity &        Memory complexity   \\ \hline
-    Sibelia    & $\mathcal{O}(m)$                    & $\mathcal{O}(m)$                     \\
-    SplitMEM   & $\mathcal{O}(m \log{g})$            & $\mathcal{O}(m + |G_{c}|)$           \\
-    bwt-based  & $\mathcal{O}(m)$                    & $\mathcal{O}(m)$                     \\
+    Sibelia    & $\mathcal{O}(m)$                    & $\mathcal{O}({\color{red}m})$                     \\
+    SplitMEM   & $\mathcal{O}(m \log{g})$            & $\mathcal{O}(|G_{c}|+{\color{red}m})$           \\
+    bwt-based  & $\mathcal{O}(m)$                    & $\mathcal{O}({\color{red}m})$                     \\
     TwoPaCo    & $\mathcal{O}(mh + (|G_{c}| + FP)k)$ & $\mathcal{O}(\max\{b, (J+FP)k \})$ \\    
     \hline
     \end{tabular}
@@ -187,11 +192,11 @@
     Dataset    &  Sibelia &   SplitMEM &     bwt-based &  \multicolumn{2}{c|}{TwoPaCo} \\ \hline
     \multicolumn{4}{| r |}{}                           & 1 thread & 15 thread\\ \hline
                
-    62 E.coli (k=25)   & 0 (12.2) & 70 (178.0) &      8 (0.85) &    4 (0.16) & 2 (0.39) \\
-    62 E.coli (k=100)  &  8 (7.6) & 67 (178.0) &      8 (0.50) &    4 (0.19) & 2 (0.39) \\ \hline
+    62 E.coli (k=25)   & 0 (12.2) & 70 ({\color{red}178.0}) &      8 (0.85) &    4 ({\color{green}0.16}) & 2 (0.39) \\
+    62 E.coli (k=100)  &  8 (7.6) & 67 ({\color{red}178.0}) &      8 (0.50) &    4 ({\color{green}0.19}) & 2 (0.39) \\ \hline
     
-    7 humans (k=25)    &        - &          - &  867 (100.30) &  436 (4.40) & 63 (4.84) \\ 
-    7 humans (k=100)   &        - &          - &   807 (46.02) &  317 (8.42) & 57 (8.75) \\ \hline
+    7 humans (k=25)    &        - &          - &  867 ({\color{red}100.30}) &  436 ({\color{green}4.40}) & 63 (4.84) \\ 
+    7 humans (k=100)   &        - &          - &   807 ({\color{red}46.02}) &  317 ({\color{green}8.42}) & 57 (8.75) \\ \hline
     
     8 primates (k=25)  &        - &          - &             - & 914 (34.36) & 111 (34.36) \\
     8 primates (k=100) &        - &          - &             - & 756 (56.06) & 101 (61.68) \\ \hline
@@ -232,10 +237,10 @@
 	\begin{tabular}{ | r | r | r | r | r | }
   \hline
   Threshold  & Used memory & Bloom filter size & Running time & Rounds \\ \hline
-        10GB &      8.62GB &       8.59GB ($2^{33}$) &           4h &      1 \\
-         8GB &      6.73GB &       4.29GB ($2^{32}$) &           7h &      3 \\
-         6GB &      5.98GB &       4.29GB ($2^{32}$) &           9h &      4 \\
-         4GB &      3.51GB &       2.14GB ($2^{31}$) &          11h &      6 \\
+  {\color{red}10GB}   &      8.62GB &       8.59GB ($2^{33}$) & {\color{green}4h} &      1 \\
+  {\color{orange}8GB} &      6.73GB &       4.29GB ($2^{32}$) & {\color{orange}7h} &      3 \\
+  {\color{orange}6GB} &      5.98GB &       4.29GB ($2^{32}$) & {\color{orange}9h} &      4 \\
+  {\color{green}4GB}  &      3.51GB &       2.14GB ($2^{31}$) & {\color{red}11h} &      6 \\
   \hline
   \end{tabular}
   
@@ -312,11 +317,11 @@
     \hline
                &     &                                  \multicolumn{3}{ c }{Junction candidates} \\ \hline
     Dataset    &   k &                Initial &              First pass &             Second pass \\ \hline
-    62 E.coli  &  25 &    310 157 564 (100\%) &    24 649 489  (7.94\%) &    24 572 562  (7.92\%) \\ 
+    62 E.coli  &  25 &    310 157 564 (100\%) &    24 649 489  ({\color{orange}7.94\%}) &    24 572 562  ({\color{green}7.92\%}) \\ 
     62 E.coli  & 100 &    310 157 489 (100\%) &    22 848 018  (7.36\%) &     9 492 091  (3.06\%) \\ \hline
-    7 humans   &  25 & 21 201 290 922 (100\%) & 3 489 946 013 (16.46\%) & 2 974 098 154 (14.02\%) \\ 
+    7 humans   &  25 & 21 201 290 922 (100\%) & 3 489 946 013 ({\color{orange}16.46\%}) & 2 974 098 154 ({\color{green}14.02\%}) \\ 
     7 humans   & 100 & 21 201 290 847 (100\%) & 1 374 287 870  (6.48\%) &   188 224 214  (0.88\%) \\ \hline
-    8 primates &  25 & 24 540 556 921 (100\%) & 5 423 003 377 (22.09\%) & 5 401 587 503 (22.01\%) \\ 
+    8 primates &  25 & 24 540 556 921 (100\%) & 5 423 003 377 ({\color{orange}22.09\%}) & 5 401 587 503 ({\color{green}22.01\%}) \\ 
     8 primates & 100 & 24 540 556 846 (100\%) & 1 174 160 336  (4.78\%) &   502 441 107  (2.04\%) \\ \hline
             
     \end{tabular}
